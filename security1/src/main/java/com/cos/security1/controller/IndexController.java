@@ -23,7 +23,7 @@ public class IndexController {
     @GetMapping({"","/"})
     public String index() {
 
-        // 머스테치 기봄폴더 src/main/resources/
+        // 머스테치 기본폴더 src/main/resources/
         // 뷰리졸버 설정 : tamplates(prefix), .mustache(suffisx) -> 생략 가능
         return "index";     // src/main/resources/tamplates/index.mustache
     }

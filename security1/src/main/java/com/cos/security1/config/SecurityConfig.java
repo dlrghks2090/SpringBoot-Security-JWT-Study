@@ -32,7 +32,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         //http.csrf().disable();
         http.authorizeRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/user/**").authenticated()    // /user 페이지는 인증해야 합니다.
+                        .requestMatchers("/user/**").authenticated()    // /user 페이지는 인증만 하면 들어갈 수 있는 페이지입니다.
                         .requestMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")  // 해당 권한중 하나가 있어야 합니다.
                         .requestMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")   // ADMIN 권한이 필요합니다.
                         .anyRequest().permitAll()   // 이외의 요청에서는 모든 권한이 허용되어 접근이 가능합니다.
@@ -40,8 +40,9 @@ public class SecurityConfig {
 
                 .formLogin(form -> form
                         .loginPage("/loginForm")
-                        .loginProcessingUrl("/loginProc")   // 로그인 Form Action URL
-                        .defaultSuccessUrl("/")     // 로그인 성공 후 이동 페이지
+//                        .usernameParameter("username")  // html 파일의 username 부분의 명칭을 바꾸지 않는다면 따로 설정하지 않고 생략 가능하디.
+                        .loginProcessingUrl("/login")   // /login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행해줍니다. -> 컨트롤러에 /login 관련 코드를 만들지 않아도 된다.
+                        .defaultSuccessUrl("/")     // /login 주소를 통한 접근시 로그인 성공 후 이동 페이지 -> 이외의 주소를 통한 접근시 로그인에 성공하면 그 페이지를 넣어줍니다.
                 );
 //
 //                .oauth2Login(oauth2 -> oauth2
