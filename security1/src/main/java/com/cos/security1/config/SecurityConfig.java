@@ -3,6 +3,7 @@ package com.cos.security1.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -11,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration  // IoC 빈(Bean)을 등록
 @EnableWebSecurity  // 스프링 시큐리티 활성화 -> 스프링 시큐리티 필터가 스프링 필터 체인에 등록된다.
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)    // secured 어노테이션 활성화, preAuthorize 와 postAuthorize 어노테이션 활성화
 public class SecurityConfig {
 
     // 해당 메서드의 리턴되는 오브젝트를 스프링 IoC 컨테이너에 빈으로 등록한다.
