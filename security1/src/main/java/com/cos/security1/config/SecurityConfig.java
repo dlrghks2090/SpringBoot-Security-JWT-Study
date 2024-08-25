@@ -45,13 +45,12 @@ public class SecurityConfig {
 //                        .usernameParameter("username")  // html 파일의 username 부분의 명칭을 바꾸지 않는다면 따로 설정하지 않고 생략 가능하디.
                         .loginProcessingUrl("/login")   // /login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행해줍니다. -> 컨트롤러에 /login 관련 코드를 만들지 않아도 된다.
                         .defaultSuccessUrl("/")     // /login 주소를 통한 접근시 로그인 성공 후 이동 페이지 -> 이외의 주소를 통한 접근시 로그인에 성공하면 그 페이지를 넣어줍니다.
-                );
+                )
 //
-//                .oauth2Login(oauth2 -> oauth2
-//                        .loginPage("/login")
-//                        .userInfoEndpoint()
-//                        .userService(principalOauth2UserService)
-//                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/loginForm")    // 구글 로그인 완료된 뒤의 후처리가 필요하다.
+
+                );
 //                .loginPage("/login")
 //                .userInfoEndpoint()
 //                .userService(principalOauth2UserService);
