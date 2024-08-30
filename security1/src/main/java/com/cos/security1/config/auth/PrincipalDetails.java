@@ -9,22 +9,30 @@ package com.cos.security1.config.auth;
 // Security Session  (get)=>  Authentication  (get)=>  UserDetails(PrincipalDetails)
 
 import com.cos.security1.model.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-
-public class PrincipalDetails implements UserDetails {
+@Data
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;  // 콤포지션
 
     public PrincipalDetails(User user) {
         this.user = user;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return Map.of();
     }
 
     // 해당 유저의 권한을 리턴하는 메서드
@@ -77,5 +85,10 @@ public class PrincipalDetails implements UserDetails {
         // 현재 시간 - 로그인 시 -> 1년을 초과하면 flase
 
         return true;    // 활성화됨
+    }
+
+    @Override
+    public String getName() {
+        return "";
     }
 }
