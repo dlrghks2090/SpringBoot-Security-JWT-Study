@@ -1,6 +1,8 @@
 package com.cos.security1.config.oauth;
 
 import com.cos.security1.config.auth.PrincipalDetails;
+import com.cos.security1.config.oauth.provider.GoogleUserInfo;
+import com.cos.security1.config.oauth.provider.OAuth2UserInfo;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +42,29 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("getAttributes = " + oauth2User.getAttributes());
 
         // 회원가입을 강제로 진행해 볼 예정.
-        String provider = userRequest.getClientRegistration().getClientId();    // google
-        String providerId = oauth2User.getAttribute("sub"); // google provider id
-        String username = provider + "_" + providerId;  // google_115670172973792303639
+        OAuth2UserInfo oAuth2UserInfo = null;
+        if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
+            System.out.println("구글 로그인 요청");
+            oAuth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes()) ;
+        }
+        else {
+            System.out.println("우리는 구글 로그인만 지원합니다.");
+        }
+        // 구글 로그인만 생각했을때의 코드입니다.
+//        String provider = userRequest.getClientRegistration().getClientId();    // google
+//        String providerId = oauth2User.getAttribute("sub"); // google provider id
+//        String username = provider + "_" + providerId;  // google_115670172973792303639
+//        String password = bCryptPasswordEncoder.encode("겟인데어"); // 크게 의미 없지만 채우기 위해 만듦.
+//        String email = oauth2User.getAttribute("email");
+//        String role = "ROLE_USER";
+
+        // 업캐스팅을 사용하여 여러 OAuth 로그인을 적용시킨 코드입니다.
+        // 어떤 도메인의 OAuth인지 상관없이 다 적용된다.
+        String provider = oAuth2UserInfo.getProvider();
+        String providerId = oAuth2UserInfo.getProviderId();
+        String username = provider + "_" + providerId;  // 구글이면 google_115670172973792303639, 네이버면
         String password = bCryptPasswordEncoder.encode("겟인데어"); // 크게 의미 없지만 채우기 위해 만듦.
-        String email = oauth2User.getAttribute("email");
+        String email = oAuth2UserInfo.getEmail();
         String role = "ROLE_USER";
 
         User userEntity = userRepository.findByUsername(username);
@@ -62,7 +82,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             userRepository.save(userEntity);
         }
         else {
-            System.out.println("구글 로그인일 이미 한 적이 있습니다. 당신은 자동 회원 가입이 되어 있습니다.");
+            System.out.println("로그인을 이미 한 적이 있습니다. 당신은 자동 회원 가입이 되어 있습니다.");
         }
 
         return new PrincipalDetails(userEntity, oauth2User.getAttributes());    // 이것이 Authentication 객체 안에 들어간다.
