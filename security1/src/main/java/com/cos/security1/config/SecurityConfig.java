@@ -23,11 +23,11 @@ public class SecurityConfig {
     @Autowired
     private PrincipalOauth2UserService principalOauth2UserService;
 
-    // 해당 메서드의 리턴되는 오브젝트를 스프링 IoC 컨테이너에 빈으로 등록한다.
-    @Bean
-    public BCryptPasswordEncoder encodePwd() {  // BCrypt 해싱 함수를 사용해 비밀번호를 인코딩해주는 메서드입니다.
-        return new BCryptPasswordEncoder();
-    }
+    // 해당 메서드의 리턴되는 오브젝트를 스프링 IoC 컨테이너에 빈으로 등록한다. -> 해당 메서드를 빈으로 등록해서 순환참조발생하여 CustomBCryptPasswordEncode 클래스를 만들어 빈으로 등록해 문제를 해결했다.
+//    @Bean
+//    public BCryptPasswordEncoder encodePwd() {  // BCrypt 해싱 함수를 사용해 비밀번호를 인코딩해주는 메서드입니다.
+//        return new BCryptPasswordEncoder();
+//    }
 
 //    @Autowired
 //    private PrincipalOauth2UserService principalOauth2UserService;

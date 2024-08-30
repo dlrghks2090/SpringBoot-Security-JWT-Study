@@ -63,39 +63,41 @@ public class IndexController {
         return "index";     // src/main/resources/tamplates/index.mustache
     }
 
+    // OAuth 로그인을 해도 PrincipalDetails
+    // 일반 로그인을 해도 PrincipalDetails
     @GetMapping("/user")
-    public @ResponseBody String User() {
-
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("principalDetails : " + principalDetails.getUser());
         return "user";
     }
 
     @GetMapping("/admin")
-    public @ResponseBody String Admin() {
+    public @ResponseBody String admin() {
 
         return "admin";
     }
 
     @GetMapping("/manager")
-    public @ResponseBody String Manager() {
+    public @ResponseBody String manager() {
 
         return "manager";
     }
 
     // 스프링 시큐리티가 해당 주소를 낚아채버린다. -> SecurityConfig 파일 생성 후 작동 안함.
     @GetMapping("/loginForm")
-    public String LoginForm() {
+    public String loginForm() {
 
         return "loginForm";
     }
 
     @GetMapping("/joinForm")
-    public String JoinForm() {
+    public String joinForm() {
 
         return "joinForm";
     }
 
     @PostMapping("/join")
-    public  String Join(User user) {
+    public  String join(User user) {
         System.out.println(user);
         user.setRole("ROLE_USER");
 //        userRepository.save(user);  // 회원가입 잘된다. But, 비밀번호가 1234 -> 시큐리티로 로그인을 할 수 없다. -> 패스워드가 암호화 되지 않았기 때문에
