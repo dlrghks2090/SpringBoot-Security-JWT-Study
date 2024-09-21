@@ -100,7 +100,6 @@ public class IndexController {
     public  String join(User user) {
         System.out.println(user);
         user.setRole("ROLE_USER");
-//        userRepository.save(user);  // 회원가입 잘된다. But, 비밀번호가 1234 -> 시큐리티로 로그인을 할 수 없다. -> 패스워드가 암호화 되지 않았기 때문에
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword); // 비밀번호 인코딩
         user.setPassword(encPassword);

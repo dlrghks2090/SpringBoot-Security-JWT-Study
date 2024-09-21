@@ -21,6 +21,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/*
+    PrincipalDetails 클래스는 Spring Security에서 일반 로그인과 OAuth2 로그인 모두를 처리할 수 있도록 UserDetails와 OAuth2User 인터페이스를 구현한 클래스입니다.
+    즉, 이 클래스는 사용자가 어떤 방식으로 로그인하든 Spring Security에서 사용자 정보를 관리할 수 있게 해줍니다.
+
+    UserDetails:
+    이 인터페이스는 Spring Security에서 **일반 로그인(아이디/비밀번호 인증)**을 처리하기 위해 사용됩니다.
+    이 인터페이스를 구현한 객체는 Authentication 객체 안에 저장되고, Authentication은 다시 Spring Security 세션에 저장됩니다.
+
+    OAuth2User:
+    이 인터페이스는 **OAuth2 로그인(구글, 페이스북 등)**을 처리하기 위해 사용됩니다.
+    OAuth2 로그인 시, 외부 인증 제공자(구글, 네이버 등)로부터 받은 사용자 정보를 속성(attribute)으로 처리할 수 있습니다.
+ */
+
 @Data
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
@@ -39,6 +52,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     }
 
     // 해당 유저의 권한을 리턴하는 메서드
+    // 여기서는 User 객체에서 역할(role)을 가져와서 Spring Security에서 요구하는 GrantedAuthority 객체로 변환하여 반환합니다.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();   // 업캐스팅하여 자료형이 GrantedAuthority인 Collection의 자식인 ArrayList 생성
